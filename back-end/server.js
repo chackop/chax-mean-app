@@ -2,33 +2,26 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var auth = require('./controllers/auth');
+var message = require('./controllers/message');
+var jwt = require('jwt-simple');
+var moment = require('moment');
+var checkAuthenticated = require('./services/checkAuthenticated');
+var cors = require('./srvices/cors');
 
-var Message = mongoose.model('message', {
-    msg: String
-});
-
+// Middleware
 app.use(bodyParser.json());
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Content-Type", Authorization);
-    next();
-});
 
-app.get('/api/message', GetMessages);
+app.use(cors);
 
-app.post('/api/message', function(req, res) {
-  console.log(req.body);
-  var message = new Message(req.body);
-  message.save;
-  res.status(200);
-});
+// Requests
+app.get('/api/message', message.get);
 
-function GetMessages(req, res) {
-  Message.find({}).exec(err, result) {
-    res.send(result);
-  };
-}
+app.post('/api/message', checkAuthenticated, message.post);
 
+app.post('/api/register', auth.register);
+
+// Connection
 mongoose.connect("mongodb://localhost:27017/test", function(err, db) {
     if(!err){
       console.log("we connected to mongo");

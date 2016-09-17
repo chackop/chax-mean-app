@@ -9,9 +9,9 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
     })
     .state('auth', {
       url: '/',
-      templateUrl: 'app/main/main.html',
-      controller: 'MainController',
-      controllerAs: 'main'
+      templateUrl: 'app/auth/auth.html',
+      controller: 'AuthController',
+      controllerAs: 'auth'
     });
 
   $urlRouterProvider.otherwise('/');
